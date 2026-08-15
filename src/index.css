@@ -1,0 +1,83 @@
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/600.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource/ibm-plex-mono/500.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-ink-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-void text-pearl font-body antialiased;
+    background-image:
+      radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 153, 51, 0.09), transparent),
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(15, 157, 88, 0.07), transparent);
+    background-repeat: no-repeat;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-display text-pearl;
+  }
+
+  :focus-visible {
+    outline: 2px solid #FF9933;
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: rgba(255, 153, 51, 0.28);
+    color: #F5F3EE;
+  }
+
+  /* Slim tricolor-tinted scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #05070D;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #1E2338;
+    border-radius: 8px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #2B3252;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply relative bg-ink/60 backdrop-blur-xl border border-ink-border rounded-2xl shadow-glass;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-mono font-medium tracking-[0.2em] uppercase text-saffron-soft;
+  }
+
+  .container-page {
+    @apply max-w-7xl mx-auto px-5 sm:px-8 lg:px-10;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

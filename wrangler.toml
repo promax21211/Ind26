@@ -1,0 +1,14 @@
+name = "freedom79"
+compatibility_date = "2026-08-01"
+
+# Static output from `npm run build`. Required for `wrangler pages deploy`
+# to treat this file as production config (see README.md).
+pages_build_output_dir = "dist"
+
+# D1 binding — replace database_id with the id printed by:
+#   npx wrangler d1 create freedom79-db
+[[d1_databases]]
+binding = "DB"
+database_name = "freedom79-db"
+database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+preview_database_id = "DB"
