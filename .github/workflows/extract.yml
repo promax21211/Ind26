@@ -13,18 +13,40 @@ jobs:
 
       - name: Extract and flatten
         run: |
-          test -f .github/workflows/freedom79.zip || { echo "freedom79.zip not found in workflows folder"; exit 1; }
+          # 1. Find the zip file wherever it is in the repository
+          ZIP_PATH=$(find . -name "freedom79.zip" | head -n 1)
+          
+          if [ -z "$ZIP_PATH" ]; then
+            echo "Error: freedom79.zip not found anywhere in the repo!"
+            exit 1
+          fi
+          
+          echo "Found zip file at: $ZIP_PATH"
+          
+          # 2. Unzip into a temporary folder
           mkdir _extracted
-          unzip -q .github/workflows/freedom79.zip -d _extracted
+          unzip -q "$ZIP_PATH" -d _extracted
+          
+          # 3. Move the contents out safely
           shopt -s dotglob
-          cp -r _extracted/freedom79/* .
-          rm -rf _extracted .github/workflows/freedom79.zip
+          
+          # If the zip has a single root folder inside, move its contents out
+          if [ $(ls -1 _extracted | wc -l) -eq 1 ] && [ -d _extracted/* ]; then
+            echo "Detected a single root folder inside the ZIP. Flattening..."
+            mv _extracted/*/* .
+          else
+            echo "Moving files directly from the ZIP root..."
+            mv _extracted/* .
+          fi
+          
+          # 4. Clean up the zip and temp directory
+          rm -rf _extracted "$ZIP_PATH"
 
       - name: Commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add -A
-          git commit -m "Extract uploaded project"
+          git commit -m "Extract uploaded project files" || echo "No changes to commit"
           git push
           
