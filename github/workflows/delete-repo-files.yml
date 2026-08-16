@@ -1,0 +1,48 @@
+name: Delete All Files Except Workflow
+
+on:
+  workflow_dispatch: # Allows manual trigger from the GitHub Actions tab
+
+jobs:
+  purge:
+    runs-on: ubuntu-latest
+    
+    # Required permissions to commit and push changes back to the repository
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetches all history for a clean git push
+
+      - name: Delete all files except workflow
+        run: |
+          # Use extended globbing to find all files except the hidden .github folder
+          shopt -s extglob
+          rm -rf !(.github)
+          
+          # Check inside .github to delete everything except the workflows folder
+          cd .github
+          rm -rf !(workflows)
+          
+          # Clean up other workflows if desired, but keep this file active
+          echo "Files deleted locally."
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          
+          # Stage all deletions and updates
+          git add -A
+          
+          # Check if there are changes to commit to avoid workflow failure
+          if git diff-index --quiet HEAD; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: purge all repository files via workflow"
+            git push origin ${{ github.ref_name }}
+          fi
+          
