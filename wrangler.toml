@@ -10,5 +10,5 @@ pages_build_output_dir = "dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "freedom79-db"
-database_id = "REPLACE_WITH_YOUR_D1_DATABASE_ID"
+database_id = "cd4a35bc-86ab-4f25-b8db-d02908086"
 preview_database_id = "DB"
