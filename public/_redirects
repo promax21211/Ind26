@@ -1,0 +1,13 @@
+# /api/* is handled by Pages Functions automatically and is not affected
+# by anything in this file.
+#
+# There is intentionally no catch-all rewrite rule here for client-side
+# routes (e.g. "/* /index.html 200"). As of writing, Cloudflare's own
+# tooling has an open bug that incorrectly flags that exact pattern as an
+# "infinite loop" and can block deployment:
+#   https://github.com/cloudflare/workers-sdk/issues/10992
+#   https://github.com/cloudflare/workers-sdk/issues/11824
+#
+# Instead, `npm run build` copies dist/index.html to dist/404.html, and
+# Cloudflare Pages serves that automatically for any unmatched path so
+# React Router can take over client-side. See README.md for details.
